@@ -39,7 +39,11 @@ def chat_loop():
             continue
 
         # 历史 + 新问题 一起丢给模型
+       
         history.append(HumanMessage(content=user_input))
+        # 内存保护：历史太长时自动丢弃旧消息，只保留最近 20 条
+        if len(history) > MAX_MESSAGES * 2:
+            history = history[-MAX_MESSAGES * 2:]
         try:
             print("AI: ", end="", flush=True)
             chunks = []
