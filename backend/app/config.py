@@ -10,3 +10,4 @@ DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 DASHSCOPE_API_KEY = os.getenv("DASHSCOPE_API_KEY", "")
 
 EMBED_MODEL = "text-embedding-v4"
+LLM_MODEL = "deepseek-chat"
