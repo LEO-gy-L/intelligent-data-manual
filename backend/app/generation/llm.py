@@ -1,4 +1,4 @@
-from typing import List, Union, Iterator
+from collections.abc import Iterator
 from backend.app.config import DEEPSEEK_API_KEY, LLM_MODEL
 from langchain_deepseek import ChatDeepSeek
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
@@ -18,31 +18,31 @@ def get_llm(temperature: float = 0.7) -> ChatDeepSeek:
 
 
 def ask(
-    query: Union[str, List[str], List],
+    query: str | list[str] | list,
     system: str = "",
     stream: bool = False,
     batch: bool = False,
     temperature: float = 0.7,
-) -> Union[str, List[str], Iterator]:
+) -> str | list[str] | Iterator:
     """
     包装器：支持单条、批量、流式、多轮历史四种调用方式。
 
     参数:
         query:
             - str          -> 单条提问
-            - List[str]    -> 批量提问（需 batch=True）
-            - List         -> 消息历史列表（多轮对话时用）
+            - list[str]    -> 批量提问（需 batch=True）
+            - list         -> 消息历史列表（多轮对话时用）
         system:   系统提示词，会放在每条对话的最前面
         stream:   True 则返回流式迭代器，需用 for 循环读取
-        batch:    True 则把 List[str] 当批量请求并行发送
+        batch:    True 则把 list[str] 当批量请求并行发送
         temperature: 采样温度，0~2，越高越有创意
 
     返回:
-        str | List[str] | Iterator
+        str | list[str] | Iterator
     """
     llm = get_llm(temperature=temperature)
 
-    messages: List = []
+    messages: list = []
     if system:
         messages.append(SystemMessage(content=system))
 
